@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import scipy
 import librosa 
 import keras
-from sklearn.preprocessing import Normalizer, LabelBinarizer
+from sklearn.preprocessing import Normalizer, LabelBinarizer, OneHotEncoder
 import os
 from sklearn.externals import joblib
 from tensorflow import set_random_seed
@@ -130,10 +130,11 @@ X_test = np.hstack((fft_test.reshape (fft_test.shape[0],1), cwt_test))
 
 #Encode output features
 lb = LabelBinarizer()
+enc = OneHotEncoder ()
 Y_train = vib_train ['Train_arrival'].to_numpy()
 Y_test = vib_test ['Train_arrival'].to_numpy()
-Y_train = lb.fit_transform(Y_train)
-Y_test = lb.transform(Y_test)
+Y_train_ = lb.fit_transform(Y_train)
+Y_test_ = lb.transform(Y_test)
 
 # reshape inputs for LSTM [samples, timesteps, features]
 X_train = X_train.reshape(X_train.shape[0], 1, X_train.shape[1])
@@ -159,26 +160,35 @@ def autoencoder_model(X):
 def oned_model (X):
     model = keras.Sequential ()
     model.add (keras.Input (shape = (X.shape[1], X.shape[2])))
-    model.add (Dense(64))
+    model.add (Dense(4))
     model.add (LSTM (4))
     model.add(Dense(1, activation='sigmoid'))
     return model
 
-
+#Train
 model1 = autoencoder_model(X_train)
 model1.compile(optimizer='adam', loss='mae', metrics=['accuracy'])
 model1.summary()
 model1.fit (X_train, Y_train, epochs=10, batch_size=1, verbose=2)
 Y_pred_1 = model1.predict (X_test)
-
-print (confusion_matrix(Y_test, Y_pred_1))
+Y_pred_2 = model2.predict (X_test)
+Y_class_2 = [1 * (x[0]>=0.003) for x in Y_pred_2]
+Y_class_3 = [1 * (x[0]>=0.003) for x in model2.predict (X_train)]
+print (confusion_matrix (Y_test_, Y_class_2))
+print (confusion_matrix (Y_train_, Y_class_3))
 print (precision_score(Y_test, Y_pred_1), recall_score(Y_test, Y_pred_1), f1_score(Y_test, Y_pred_1))
 
+
+#Test
 model2 = oned_model (X_train)
-model2.compile (optimizer='adam', loss='mae, metrics=['accuracy']')
+model2.compile (optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model2.summary ()
-model2.fit (X_train, Y_train, epochs=10, batch_size=1, verbose=2)
+model2.fit (X_train, Y_train_, epochs=5, verbose=2)
 Y_pred_2 = model2.predict (X_test)
+Y_class_2 = [1 * (x[0]>=0.003) for x in Y_pred_2]
+Y_class_3 = [1 * (x[0]>=0.003) for x in model2.predict (X_train)]
+print (confusion_matrix (Y_test_, Y_class_2))
+print (confusion_matrix (Y_train_, Y_class_3))
 
 print (confusion_matrix(Y_test, Y_pred_2))
-print (precision_score(Y_test, Y_pred_2), recall_score(Y_test, Y_pred_2), f1_score(Y_test, Y_pred_2))
+print (precision_score(Y_test_, Y_class_2), recall_score(Y_test_, Y_class_2), f1_score(Y_test_, Y_class_2))
