@@ -161,12 +161,12 @@ def oned_model (X):
     model.add (keras.Input (shape = (X.shape[1], X.shape[2])))
     model.add (Dense(64))
     model.add (LSTM (4))
-    model.add (Softmax(1))
+    model.add(Dense(1, activation='sigmoid'))
     return model
 
 
 model1 = autoencoder_model(X_train)
-model1.compile(optimizer='adam', loss='mae')
+model1.compile(optimizer='adam', loss='mae', metrics=['accuracy'])
 model1.summary()
 model1.fit (X_train, Y_train, epochs=10, batch_size=1, verbose=2)
 Y_pred_1 = model1.predict (X_test)
@@ -175,7 +175,7 @@ print (confusion_matrix(Y_test, Y_pred_1))
 print (precision_score(Y_test, Y_pred_1), recall_score(Y_test, Y_pred_1), f1_score(Y_test, Y_pred_1))
 
 model2 = oned_model (X_train)
-model2.compile (optimizer='adam', loss='mae')
+model2.compile (optimizer='adam', loss='mae, metrics=['accuracy']')
 model2.summary ()
 model2.fit (X_train, Y_train, epochs=10, batch_size=1, verbose=2)
 Y_pred_2 = model2.predict (X_test)
