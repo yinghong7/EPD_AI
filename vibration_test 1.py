@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 import scipy
 import librosa 
 import keras
-from sklearn.preprocessing import Normalizer
+from sklearn.preprocessing import Normalizer, LabelBinarizer
 import os
 from sklearn.externals import joblib
 from tensorflow import set_random_seed
 import tensorflow as tf
 tf.logging.set_verbosity(tf.logging.ERROR)
-from keras.layers import Input, Dropout, Dense, LSTM, TimeDistributed, RepeatVector
+from keras.layers import Input, Dropout, Dense, LSTM, Softmax
 from keras.models import Model
 from keras import regularizers
 from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score
@@ -111,23 +111,29 @@ cwt_test = cwt(vib_test['Acceleration'].to_numpy(), np.arange (35,36))
 scaler = Normalizer()
 fft_train = scaler.fit_transform (fft_train)
 fft_test = scaler.transform (fft_test)
+cwt_train = scaler.fit_transform (cwt_train)
+cwt_test = scaler.transform (cwt_test)
+
 
 spectrum_train = scaler.fit_transform (spectrum_train)
 spectrum_test = scaler.transform (spectrum_test)
 
 stft_train = scaler.fit_transform (stft_train)
 stft_test = scaler.transform (stft_test)
-
 log_stft_train = scaler.fit_transform (log_stft_train)
 log_stft_test = scaler.transform (log_stft_test)
 
-cwt_train = scaler.fit_transform (cwt_train)
-cwt_test = scaler.transform (cwt_test)
 
-#Select input features
+#fft and cwt have the same shape
+X_train = np.hstack((fft_train.reshape (fft_train.shape[0],1), cwt_train))
+X_test = np.hstack((fft_test.reshape (fft_test.shape[0],1), cwt_test))
 
+#Encode output features
+lb = LabelBinarizer()
 Y_train = vib_train ['Train_arrival'].to_numpy()
 Y_test = vib_test ['Train_arrival'].to_numpy()
+Y_train = lb.fit_transform(Y_train)
+Y_test = lb.transform(Y_test)
 
 # reshape inputs for LSTM [samples, timesteps, features]
 X_train = X_train.reshape(X_train.shape[0], 1, X_train.shape[1])
@@ -150,27 +156,28 @@ def autoencoder_model(X):
     return model
 
 
-def 1d_model (X):
-    model = Sequential ()
-    model.add (SimpleRNN(64, input_shape = (X.shape[1], X.shape[2]))
-    model.add (Dense(1))
+def oned_model (X):
+    model = keras.Sequential ()
+    model.add (keras.Input (shape = (X.shape[1], X.shape[2])))
+    model.add (Dense(64))
+    model.add (LSTM (4))
+    model.add (Softmax(1))
     return model
-
 
 
 model1 = autoencoder_model(X_train)
 model1.compile(optimizer='adam', loss='mae')
 model1.summary()
-model1.fit (X_train, Y_train, epochs=100, batch_size=1, verbose=2)
+model1.fit (X_train, Y_train, epochs=10, batch_size=1, verbose=2)
 Y_pred_1 = model1.predict (X_test)
 
 print (confusion_matrix(Y_test, Y_pred_1))
 print (precision_score(Y_test, Y_pred_1), recall_score(Y_test, Y_pred_1), f1_score(Y_test, Y_pred_1))
 
-model2 = 1d_model (X_train)
+model2 = oned_model (X_train)
 model2.compile (optimizer='adam', loss='mae')
 model2.summary ()
-model2.fit (X_train, Y_train, epochs=100, batch_size=1, verbose=2)
+model2.fit (X_train, Y_train, epochs=10, batch_size=1, verbose=2)
 Y_pred_2 = model2.predict (X_test)
 
 print (confusion_matrix(Y_test, Y_pred_2))
