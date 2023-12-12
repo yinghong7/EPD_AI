@@ -18,8 +18,8 @@ from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_
 filename = '/Users/yc/Downloads/Vibration_raw.xlsx'
 xls = pd.ExcelFile(filename)
 folder = ['1726_CH1', '1726_CH2', '1726_CH3', '2049_CH1', '2049_CH2', '2049_CH3', '2114_CH1', '2114_CH2', '2114_CH3', '2145_CH1', '2145_CH2', '2145_CH3', '2155_CH1', '2155_CH2', '2155_CH3']  
-trainfolder = ['1726_CH1', '1726_CH2', '1726_CH3', '2049_CH1', '2049_CH2', '2049_CH3', '2114_CH1', '2114_CH2', '2114_CH3']  
-testfolder = ['2145_CH1', '2145_CH2', '2145_CH3', '2155_CH1', '2155_CH2', '2155_CH3']
+trainfolder = ['1726_CH1', '1726_CH2', '1726_CH3', '2049_CH1', '2049_CH2', '2049_CH3', '2114_CH1', '2114_CH2', '2114_CH3', '2145_CH1', '2145_CH2', '2145_CH3']  
+testfolder = ['2155_CH1', '2155_CH2', '2155_CH3']
 fs = 10
 
 
@@ -75,22 +75,22 @@ def stft_plot (data, sample_rate, FIG_SIZE, nperseg):
   plt.title ("Spectrogram (dB)")
   plt.show ()
 
-
+#Important Note: the length of spectrogram and log_spectrogram is determined by nperseg (i.e., the number of segments)
 def stft (data, sample_rate, nperseg):
 	f, t, spectrogram = scipy.signal.stft(data, sample_rate, nperseg = nperseg)
-	log_spectrogram = librosa.amplitude_to_db(spectrogram)
+	log_spectrogram = librosa.amplitude_to_db(np.abs(spectrogram))
 	return spectrogram, log_spectrogram
 
 
 def power_spectrum (data, sample_rate):
   fft = np.fft.fft (data)
   f, t, Sxx = scipy.signal.spectrogram(data, sample_rate, scaling = 'spectrum')
-  return fft, Sxx 
+  return fft.real, Sxx.real 
 
 
 def cwt (data, width):
   cwtmatr = scipy.signal.cwt(data, scipy.signal.ricker, width)
-  return cwtmatr
+  return cwtmatr.reshape (cwtmatr.shape[1], cwtmatr.shape[0])
  
 
 vib_data = read_data(xls, folder)
@@ -101,28 +101,28 @@ vib_test = read_data(xls, testfolder)
 fft_train, spectrum_train = power_spectrum(vib_train['Acceleration'].to_numpy(), 10)
 fft_test, spectrum_test = power_spectrum(vib_test['Acceleration'].to_numpy(), 10)
 
-stft_train, log_stft_train = stft(vib_train['Acceleration'].to_numpy(), 10, 300)
-stft_test, log_stft_test = stft(vib_test['Acceleration'].to_numpy(), 10, 300)
+stft_train, log_stft_train = stft(vib_train['Acceleration'].to_numpy(), 10, 500)
+stft_test, log_stft_test = stft(vib_test['Acceleration'].to_numpy(), 10, 500)
 
-cwt_train = cwt(vib_train['Acceleration'].to_numpy(), np.arange (3,31))
-cwt_test = cwt(vib_test['Acceleration'].to_numpy(), np.arange (3,31))
+cwt_train = cwt(vib_train['Acceleration'].to_numpy(), np.arange (35, 36))
+cwt_test = cwt(vib_test['Acceleration'].to_numpy(), np.arange (35,36))
 
 #Pre-processing
 scaler = Normalizer()
-fft_train = Normalizer.fit_transform (fft_train)
-fft_test = Normalizer.transform (fft_test)
+fft_train = scaler.fit_transform (fft_train)
+fft_test = scaler.transform (fft_test)
 
-spectrum_train = Normalizer.fit_transform (spectrum_train)
-spectrum_test = Normalizer.transform (spectrum_test)
+spectrum_train = scaler.fit_transform (spectrum_train)
+spectrum_test = scaler.transform (spectrum_test)
 
-stft_train = Normalizer.fit_transform (stft_train)
-stft_test = Normalizer.transform (stft_test)
+stft_train = scaler.fit_transform (stft_train)
+stft_test = scaler.transform (stft_test)
 
-log_stft_train = Normalizer.fit_transform (log_stft_train)
-log_stft_test = Normalizer.transform (log_stft_test)
+log_stft_train = scaler.fit_transform (log_stft_train)
+log_stft_test = scaler.transform (log_stft_test)
 
-cwt_train = Normalizer.fit_transform (cwt_train)
-cwt_test = Normalizer.transform (cwt_test)
+cwt_train = scaler.fit_transform (cwt_train)
+cwt_test = scaler.transform (cwt_test)
 
 #Select input features
 
