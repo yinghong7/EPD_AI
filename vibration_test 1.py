@@ -5,11 +5,7 @@ import scipy
 import librosa 
 import keras
 from sklearn.preprocessing import Normalizer, LabelBinarizer, OneHotEncoder
-import os
-from sklearn.externals import joblib
-from tensorflow import set_random_seed
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
 from keras.layers import Input, Dropout, Dense, LSTM, Softmax
 from keras.models import Model
 from keras import regularizers
@@ -94,6 +90,12 @@ def cwt (data, width):
  
 
 vib_data = read_data(xls, folder)
+#split with train and without train
+w_train = vib_data[(vib_data.Train_arrival == 'Y')]
+wo_train = vib_data[(vib_data.Train_arrival == 'N')]
+
+
+#train and test folder
 vib_train = read_data(xls, trainfolder)
 vib_test = read_data(xls, testfolder)
 
