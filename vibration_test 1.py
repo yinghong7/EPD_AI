@@ -93,6 +93,17 @@ vib_data = read_data(xls, folder)
 #split with train and without train
 w_train = vib_data[(vib_data.Train_arrival == 'Y')]
 wo_train = vib_data[(vib_data.Train_arrival == 'N')]
+fft_w_train, spectrum_w_train = power_spectrum(w_train['Acceleration'].to_numpy(), 10)
+fft_wo_train, spectrum_wo_train = power_spectrum(wo_train['Acceleration'].to_numpy(), 10)
+
+stft_w_train, log_stft_w_train = stft(w_train['Acceleration'].to_numpy(), 10, 500)
+stft_wo_train, log_stft_wo_train = stft(wo_train['Acceleration'].to_numpy(), 10, 500)
+
+cwt_w_train = cwt(w_train['Acceleration'].to_numpy(), np.arange (3, 36))
+cwt_wo_train = cwt(wo_train['Acceleration'].to_numpy(), np.arange (3,36))
+
+Y_w_train = vib_train ['Train_arrival'].to_numpy()
+Y_wo_train = vib_wo_train ['Train_arrival'].to_numpy()
 
 
 #train and test folder
