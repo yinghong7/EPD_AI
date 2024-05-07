@@ -16,7 +16,7 @@ import argparse
 
 def main():
     os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-    loaded_model = tf.keras.models.load_model(os.getcwd + "/mask_model.h5") 
+    loaded_model = tf.keras.models.load_model(os.getcwd + "\\mask_model.h5") 
     parser = argparse.ArgumentParser()
     parser.add_argument('--location', help='file_location')
     args = parser.parse_args()
