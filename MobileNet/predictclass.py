@@ -14,10 +14,6 @@ import argparse
 
 model = tf.keras.applications.MobileNet(weights='imagenet')
 
-# ***Set your image folder & class list here***
-# imagefolder = os.getcwd() + '\\Testimage'
-#'C:\\Users\\Simon.Leuk\\Documents\\02_EPDNoise\\Imagerecognition\\MobileNet\\Testimage'
-
 class mobileNet ():
     def __init__ (self):
         self.folder = os.getcwd()
