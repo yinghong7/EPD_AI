@@ -1,0 +1,87 @@
+,Pred_result,Timestamp,True label
+23,Handheld percussive breakers <10kg,20240801024443.00,Handheld less than 10kg
+40,Handheld percussive breakers <10kg,20240801025219.00,Handheld less than 10kg
+58,Handheld percussive breakers <10kg,20240801025342.00,Handheld less than 10kg
+53,Handheld percussive breakers <10kg,20240801025431.00,Handheld less than 10kg
+64,Handheld percussive breakers <10kg,20240801025520.00,Handheld less than 10kg
+19,Handheld percussive breakers <10kg,20240801025614.00,Handheld less than 10kg
+12,Handheld percussive breakers <10kg,20240801025711.00,Handheld less than 10kg
+47,Handheld percussive breakers <10kg,20240801025805.00,Handheld less than 10kg
+13,Handheld percussive breakers <10kg,20240801025857.00,Handheld less than 10kg
+36,Handheld percussive breakers <10kg,20240801025956.00,Handheld less than 10kg
+10,Handheld percussive breakers <10kg,20240801030056.00,Handheld less than 10kg
+31,Handheld percussive breakers <10kg,20240801030154.00,Handheld less than 10kg
+45,Handheld percussive breakers <10kg,20240801030239.00,Handheld less than 10kg
+7,Handheld percussive breakers <10kg,20240801030325.00,Handheld less than 10kg
+20,Handheld percussive breakers <10kg,20240801030423.00,Handheld less than 10kg
+80,Handheld percussive breakers <10kg,20240801030510.00,Handheld less than 10kg
+30,Handheld percussive breakers <10kg,20240801030551.00,Handheld less than 10kg
+61,Handheld percussive breakers <10kg,20240801030638.00,Handheld less than 10kg
+14,Handheld percussive breakers <10kg,20240801030725.00,Handheld less than 10kg
+22,Handheld percussive breakers <10kg,20240801030807.00,Handheld less than 10kg
+62,Electric Percussive Drill,20240801030850.00,Percussive breaker over 10kg
+68,Handheld percussive breakers <10kg,20240801030933.00,Percussive breaker over 10kg
+84,Handheld percussive breakers >10kg,20240801031021.00,Percussive breaker over 10kg
+24,Handheld percussive breakers >10kg,20240801031106.00,Percussive breaker over 10kg
+85,Handheld percussive breakers <10kg,20240801031155.00,Percussive breaker over 10kg
+42,Handheld percussive breakers <10kg,20240801031251.00,Percussive breaker over 10kg
+4,Handheld percussive breakers <10kg,20240801031403.00,Percussive breaker over 10kg
+25,Handheld percussive breakers >10kg,20240801031448.00,Percussive breaker over 10kg
+83,Handheld percussive breakers <10kg,20240801031550.00,Percussive breaker over 10kg
+55,Handheld percussive breakers <10kg,20240801031646.00,Percussive breaker over 10kg
+0,Handheld percussive breakers >10kg,20240801031819.00,Percussive breaker over 10kg
+60,Handheld percussive breakers >10kg,20240801031916.00,Percussive breaker over 10kg
+27,Handheld percussive breakers <10kg,20240801032021.00,Percussive breaker over 10kg
+29,Handheld percussive breakers >10kg,20240801032144.00,Percussive breaker over 10kg
+38,Handheld percussive breakers >10kg,20240801032229.00,Percussive breaker over 10kg
+6,Handheld percussive breakers >10kg,20240801032320.00,Percussive breaker over 10kg
+33,Handheld percussive breakers <10kg,20240801032409.00,Percussive breaker over 10kg
+66,Handheld percussive breakers >10kg,20240801032505.00,Percussive breaker over 10kg
+51,Handheld percussive breakers >10kg,20240801032818.00,Percussive breaker over 10kg
+17,Handheld percussive breakers >10kg,20240801033010.00,Percussive breaker over 10kg
+34,Handheld percussive breakers <10kg,20240801033059.00,Percussive breaker over 10kg
+71,Handheld percussive breakers <10kg,20240801033143.00,Percussive breaker over 10kg
+78,Handheld percussive breakers <10kg,20240801033225.00,Percussive breaker over 10kg
+41,Handheld percussive breakers >10kg,20240801033308.00,Percussive breaker over 10kg
+75,Handheld percussive breakers >10kg,20240801033350.00,Percussive breaker over 10kg
+72,Electric Percussive Drill,20240801033432.00,Percussive breaker over 10kg
+46,Handheld percussive breakers <10kg,20240801033518.00,Percussive breaker over 10kg
+9,Others,20240801033611.00,Electrical Percussive drill
+49,Handheld percussive breakers <10kg,20240801033653.00,Electrical Percussive drill
+77,Handheld percussive breakers <10kg,20240801033741.00,Electrical Percussive drill
+1,Handheld percussive breakers <10kg,20240801033834.00,Electrical Percussive drill
+26,Handheld percussive breakers <10kg,20240801033934.00,Electrical Percussive drill
+73,Handheld percussive breakers <10kg,20240801034017.00,Electrical Percussive drill
+57,Electric Percussive Drill,20240801034105.00,Electrical Percussive drill
+67,Handheld percussive breakers <10kg,20240801034148.00,Electrical Percussive drill
+5,Handheld percussive breakers <10kg,20240801034235.00,Electrical Percussive drill
+21,Electric Percussive Drill,20240801034321.00,Electrical Percussive drill
+18,Handheld percussive breakers <10kg,20240801034408.00,Electrical Percussive drill
+52,Handheld percussive breakers <10kg,20240801034514.00,Electrical Percussive drill
+82,Electric Percussive Drill,20240801034602.00,Electrical Percussive drill
+43,Handheld percussive breakers <10kg,20240801034659.00,Electrical Percussive drill
+16,Electric Percussive Drill,20240801034743.00,Electrical Percussive drill
+35,Electric Percussive Drill,20240801034911.00,Electrical Percussive drill
+79,Electric Percussive Drill,20240801034951.00,Electrical Percussive drill
+65,Handheld percussive breakers <10kg,20240801035040.00,Electrical Percussive drill
+3,Handheld percussive breakers >10kg,20240801035129.00,Electrical Percussive drill
+48,Handheld percussive breakers <10kg,20240801035223.00,Others
+11,Handheld percussive breakers <10kg,20240801035310.00,Others
+28,Handheld percussive breakers <10kg,20240801035411.00,Others
+81,Others,20240801035454.00,Others
+44,Handheld percussive breakers <10kg,20240801035547.00,Others
+37,Handheld percussive breakers <10kg,20240801035629.00,Others
+2,Others,20240801035713.00,Others
+50,Others,20240801035801.00,Others
+15,Others,20240801035850.00,Others
+8,Others,20240801035937.00,Others
+69,Handheld percussive breakers >10kg,20240801040026.00,Others
+32,Handheld percussive breakers >10kg,20240801040114.00,Others
+76,Handheld percussive breakers >10kg,20240801040156.00,Others
+59,Handheld percussive breakers >10kg,20240801040241.00,Others
+39,Handheld percussive breakers <10kg,20240801040324.00,Others
+63,Electric Percussive Drill,20240801040409.00,Others
+56,Others,20240801040450.00,Others
+74,Others,20240801040543.00,Others
+70,Handheld percussive breakers <10kg,20240801040634.00,Others
+54,Electric Percussive Drill,20240801040726.00,Others
