@@ -10,8 +10,8 @@ import os, sys, glob
 import pickle
 import pandas as pd
 
-# AudioSegment.converter = os.getcwd()+ "/ffmpeg.exe"
-# AudioSegment.ffprobe = os.getcwd()+ "/ffprobe.exe"
+AudioSegment.converter = os.getcwd()+ "\\ffmpeg.exe"
+AudioSegment.ffprobe = os.getcwd()+ "\\ffprobe.exe"
 
 def preprocess(input_file_path):
   audio, sr = librosa.load(path = input_file_path, sr=22050)
@@ -33,7 +33,7 @@ def classify(input_file_path):
   #pmeclasses=["Handheld percussive breakers >10kg","Handheld percussive breakers <10kg","Others","Electric Percussive Drill"]
   pmeclasses=["Electric Percussive Drill", "Handheld percussive breakers <10kg","Others","Handheld percussive breakers >10kg"]
   testfeat = preprocess(input_file_path)
-  loaded_model = tf.keras.models.load_model('/Users/ying/Downloads/soundmodel_conference_v8.h5')
+  loaded_model = tf.keras.models.load_model('soundmodel_conference_v8.h5')
   # extra_model = pickle.load(open('below and over 10 conference.pkl', 'rb'))
   preds=loaded_model.predict(testfeat)
   indmax = np.argmax(preds[0])
@@ -45,16 +45,16 @@ def classify(input_file_path):
   # else: return pmeclasses[indmax]
 
 def main():
-    folderpath = os.getcwd() +'/0108_EPD testing'
+    folderpath = os.getcwd() +'\\0108_EPD testing'
     result, name = [], []
     for wav_file in glob.glob(os.path.join(folderpath, '*')):
       pred = classify(wav_file)
       if type(pred) != str:
          result.append (pred[0])
       else: result.append (pred)
-      name.append (wav_file.split('/')[-1].split('_')[0])
+      name.append (wav_file.split('\\')[-1].split('_')[0])
     df = pd.DataFrame (list(zip(result, name)), columns = ['Pred_result', 'True_label'])
-    df.to_csv ('result.csv')
+    df.to_csv (os.getcwd()+'\\result.csv')
       # with open('result.pkl', 'wb') as file: 
       #   pickle.dump(result, file) 
       # with open('name.pkl', 'wb') as file: 
