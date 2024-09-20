@@ -1,0 +1,81 @@
+#cd go/src/github.com/yinghong7/fabric-samples/test-network
+
+cd Documents/GitHub/blockchain-capstone/backend/test-network-budgetinsurance
+./network.sh up createChannel -s couchdb
+
+under asset-transfer-basic
+./network.sh up createChannel -c mychannel
+
+# install chaincode
+./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-go/ -ccl go
+
+cd Documents/GitHub/blockchain-capstone/backend/asset-transfer-basic/application-gateway-go
+go run .
+
+# inquire asset
+#cd /Users/yc/go/src/github.com/yinghong7/fabric-samples/test-network-budgetinsurance
+
+export PATH=${PWD}/../bin:$PATH
+export FABRIC_CFG_PATH=$PWD/../config/
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.budgetinsurance.com/users/Admin@org1.budgetinsurance.com/msp
+
+
+export CORE_PEER_TLS_ENABLED=true
+export CORE_PEER_LOCALMSPID="Org1MSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.budgetinsurance.com/peers/peer0.org1.budgetinsurance.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.budgetinsurance.com/users/Admin@org1.budgetinsurance.com/msp
+export CORE_PEER_ADDRESS=localhost:7051
+# update asset
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.budgetinsurance.com --tls --cafile "${PWD}/organizations/ordererOrganizations/budgetinsurance.com/orderers/orderer.budgetinsurance.com/msp/tlscacerts/tlsca.budgetinsurance.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.budgetinsurance.com/peers/peer0.org1.budgetinsurance.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.budgetinsurance.com/peers/peer0.org2.budgetinsurance.com/tls/ca.crt" -c '{"function":"CreateAsset","Args":["asset8","blue","16","Kelley","750"]}'
+
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.budgetinsurance.com --tls --cafile "${PWD}/organizations/ordererOrganizations/budgetinsurance.com/orderers/orderer.budgetinsurance.com/msp/tlscacerts/tlsca.budgetinsurance.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.budgetinsurance.com/peers/peer0.org1.budgetinsurance.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.budgetinsurance.com/peers/peer0.org2.budgetinsurance.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
+
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.budgetinsurance.com --tls --cafile "${PWD}/organizations/ordererOrganizations/budgetinsurance.com/orderers/orderer.budgetinsurance.com/msp/tlscacerts/tlsca.budgetinsurance.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.budgetinsurance.com/peers/peer0.org1.budgetinsurance.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.budgetinsurance.com/peers/peer0.org2.budgetinsurance.com/tls/ca.crt" -c '{"function":"UpdateAsset","Args":["asset6","blue","16","Kelley","750"]}'
+
+peer chaincode query -C mychannel -n basic -c '{"Args":["GetAllAssets"]}'
+
+# rest api setup
+cd ..
+cd asset-transfer-basic/rest-api-go
+go mod download
+go run main.go
+
+curl --request POST \
+  --url http://localhost:3000/invoke \
+  --header 'content-type: application/x-www-form-urlencoded' \
+  --data = \
+  --data channelid=mychannel \
+  --data chaincodeid=basic \
+  --data function=createAsset \
+  --data args=Asset123 \
+  --data args=yellow \
+  --data args=54 \
+  --data args=Tom \
+  --data args=13005
+
+# notes
+
+Notes:
+under docker/docker compose test net yaml change organisation address
+compose test net yaml sets the test network
+configtx/configtx.yaml change org2
+
+adding new peers and orgs, through the docker/docker compose test net yaml 
+
+Set up database:
+./network.sh up -s couchdb (leveldb by default); couchdb starts numbering from 0.
+update couchdb container name and other details under /test-network/compose/compose-couch.yaml
+
+
+Create gensis block:
+test-network/configtx/configtx.yaml
+
+To generate a gensis block
+configtxgen -outputBlock <file name> 
+            -profile <profile name> 
+            -channelId <channel name>`
+
+use docker-compose to shut down the network, rather than network.sh
+
+
+RestAPI
