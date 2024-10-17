@@ -1,15 +1,13 @@
-#cd go/src/github.com/yinghong7/fabric-samples/test-network
-
-cd Documents/GitHub/blockchain-capstone/backend/test-network-budgetinsurance
+cd ~/go/src/github.com/yinghong7/fabric-samples/test-network
 ./network.sh up createChannel -s couchdb
 
-under asset-transfer-basic
+# under asset-transfer-basic
 ./network.sh up createChannel -c mychannel
 
 # install chaincode
 ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-go/ -ccl go
 
-cd Documents/GitHub/blockchain-capstone/backend/asset-transfer-basic/application-gateway-go
+cd ~/go/src/github.com/yinghong7/fabric-samples/asset-transfer-basic/application-gateway-go
 go run .
 
 # inquire asset
